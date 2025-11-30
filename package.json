@@ -53,7 +53,7 @@
     "zod": "^4.1.13"
   },
   "peerDependencies": {
-    "@strapi/design-system": "^2.0.0",
+    "@strapi/design-system": "^2.0.1",
     "@strapi/icons": "^2.0.0",
     "@strapi/strapi": "^5.12.5",
     "prismjs": "1.30.0",
