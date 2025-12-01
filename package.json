@@ -39,8 +39,6 @@
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "^5.3.2",
-    "@strapi/strapi": "^5.12.5",
-    "@strapi/typescript-utils": "^5.12.5",
     "@types/prismjs": "1.26.5",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
