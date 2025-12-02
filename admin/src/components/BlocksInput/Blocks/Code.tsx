@@ -14,8 +14,13 @@ import { baseHandleConvert } from '../utils/conversions';
 import { pressEnterTwiceToExit } from '../utils/enterKey';
 import { CustomElement, CustomText, type Block } from '../utils/types';
 
-if (typeof window !== 'undefined') {
-  (window as any).Prism = Prism;
+// Critical fix for published plugin: do NOT overwrite window.Prism!
+// Strapi loads its own global Prism script later.
+// We only provide a safe stub if it's missing (very rare), never override.
+if (typeof window !== 'undefined' && !window.Prism) {
+  // Minimal safe stub — prevents "Prism is not defined" crashes
+  // Strapi’s real Prism will replace this automatically
+  (window as any).Prism = { manual: true, languages: {} };
 }
 
 import 'prismjs/themes/prism-solarizedlight.css';
@@ -84,10 +89,7 @@ type BaseRangeCustom = BaseRange & { className: string };
 
 const isCodeElement = (node: Node): node is CodeElement => {
   return (
-    !Editor.isEditor(node) && 
-    Element.isElement(node) && 
-    'type' in node && 
-    node.type === 'code'
+    !Editor.isEditor(node) && Element.isElement(node) && 'type' in node && node.type === 'code'
   );
 };
 
@@ -95,8 +97,7 @@ export const decorateCode = ([node, path]: NodeEntry) => {
   const ranges: BaseRangeCustom[] = [];
 
   // make sure it is an Slate Element
-  if (!Element.isElement(node) ||  'type' in node && 
-    node.type === 'code') return ranges;
+  if (!Element.isElement(node) || ('type' in node && node.type === 'code')) return ranges;
   // transform the Element into a string
   const text = Node.string(node);
   const language = codeLanguages.find((lang) => lang.value === (node as CustomElement).language);
@@ -133,8 +134,8 @@ const CodeBlock = styled.pre`
   flex-shrink: 1;
 
   & > code {
-    font-family: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas,
-      monospace;
+    font-family:
+      'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas, monospace;
     color: ${({ theme }) => theme.colors.neutral800};
     overflow: auto;
     max-width: 100%;
@@ -173,8 +174,8 @@ const CodeEditor = (props: CodeEditorProps) => {
               Transforms.setNodes<CodeElement>(
                 editor,
                 { language: open.toString() },
-                { 
-                  match: (node): node is CodeElement => isCodeElement(node)
+                {
+                  match: (node): node is CodeElement => isCodeElement(node),
                 }
               );
             }}
@@ -207,7 +208,7 @@ const CodeEditor = (props: CodeEditorProps) => {
 
 const codeBlocks: Pick<BlocksStore, 'code'> = {
   code: {
-    renderElement: (props: RenderElementProps) => <CodeEditor {...props as CodeEditorProps} />,
+    renderElement: (props: RenderElementProps) => <CodeEditor {...(props as CodeEditorProps)} />,
     icon: CodeBlockIcon,
     label: {
       id: 'components.Blocks.blocks.code',
@@ -216,18 +217,15 @@ const codeBlocks: Pick<BlocksStore, 'code'> = {
     // Update the matchNode function to accept Node type
     matchNode: (node: Node): node is CodeElement => {
       return (
-        !Editor.isEditor(node) && 
-        Element.isElement(node) && 
-        'type' in node && 
-        node.type === 'code'
+        !Editor.isEditor(node) && Element.isElement(node) && 'type' in node && node.type === 'code'
       );
     },
     isInBlocksSelector: true,
     handleConvert(editor) {
-      baseHandleConvert<CodeElement>(editor, { 
-        type: 'code', 
+      baseHandleConvert<CodeElement>(editor, {
+        type: 'code',
         language: 'plaintext',
-        children: [{ type: 'text', text: '' } as CustomText]
+        children: [{ type: 'text', text: '' } as CustomText],
       });
     },
     handleEnterKey(editor) {
