@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.3.0",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -23,8 +23,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "strapi-plugin build --admin-only --server-only",
-    "strapi:build": "strapi-plugin build --admin-only --server-only",
+    "build": "strapi-plugin build",
+    "strapi:build": "strapi-plugin build",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
@@ -35,11 +35,14 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "highlight.js": "^11.11.1",
     "strapi-plugin-media-extended": "^1.0.1"
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "^5.3.2",
-    "@types/prismjs": "1.26.5",
+    "@strapi/strapi": "^5.31.2",
+    "@strapi/typescript-utils": "^5.31.2",
+    "@types/highlight.js": "^9.12.4",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "esbuild": "^0.27.0",
@@ -54,8 +57,7 @@
   "peerDependencies": {
     "@strapi/design-system": "^2.0.1",
     "@strapi/icons": "^2.0.0",
-    "@strapi/strapi": "^5.12.5",
-    "prismjs": "1.30.0",
+    "@strapi/strapi": "^5.31.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-intl": "^7.1.10",
@@ -74,5 +76,8 @@
   "name": "@aish-global/strapi-plugin-rich-text-blocks-extended",
   "description": "An extended version of the JSON based native strapi field \"Rich Text (Blocks)\"",
   "license": "MIT",
-  "author": "Jorge Pizzati <jorge.pizzati@uvltd.tech>"
+  "author": "Jorge Pizzati <jorge.pizzati@uvltd.tech>",
+  "contributors": [
+    "Gershon Kagan <gkagan@aish.edu>"
+  ]
 }
