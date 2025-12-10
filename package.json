@@ -73,7 +73,8 @@
   "description": "An extended version of the JSON based native strapi field \"Rich Text (Blocks)\"",
   "license": "MIT",
   "publishConfig": {
-    "provenance": true
+    "provenance": false,
+    "access": "public"
   },
   "author": "Jorge Pizzati <jorge.pizzati@uvltd.tech>",
   "contributors": [
